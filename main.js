@@ -13,8 +13,14 @@ let taskList = [];
 addBtn.addEventListener('click', addTask);
 
 function addTask(){
-    let taskContent = taskInput.value;
-    taskList.push(taskContent);
+    //let taskContent = taskInput.value;
+    let task = {
+        id: randomIDGenerate(),
+        taskContent: taskInput.value,
+        isComplete: false
+    }
+    taskList.push(task);
+    console.log(taskList);
     render();
 }
 
@@ -22,18 +28,67 @@ function addTask(){
 function render(){
     let resultHTML = '';
     for(let i=0; i<taskList.length; i++){
-        resultHTML += `<div class="task">
-                    <div>${taskList[i]}</div>
-                    <div>
-                        <button>Check</button>
-                        <button>Delete</button>
+        if(taskList[i].isComplete == true){
+            resultHTML += `<div class="task">
+                    <div class="task-done">${taskList[i].taskContent}</div>
+                    <div class="btn-area">
+                        <button onclick="toggleComplete('${taskList[i].id}')" class="task-btn check">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+                        <button onclick="deleteTask('${taskList[i].id}')" class="task-btn delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </div>                    
                 </div>`
+        }else{
+            resultHTML += `<div class="task">
+                    <div>${taskList[i].taskContent}</div>
+                    <div class="btn-area">
+                        <button onclick="toggleComplete('${taskList[i].id}')" class="task-btn check">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                        <button onclick="deleteTask('${taskList[i].id}')" class="task-btn delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>                    
+                </div>`
+        }        
     }
 
     document.getElementById("task-board").innerHTML = resultHTML;
-
 }
+
+//사용자가 입력한 목록 객체 내 랜덤 고유한 아이디 번호 생성 함수
+function randomIDGenerate(){
+    return '_' + Math.random().toString(36).substring(2, 9);
+}
+
+function toggleComplete(id){
+    for(let i=0; i<taskList.length; i++){
+        if(taskList[i].id == id){
+            taskList[i].isComplete = !taskList[i].isComplete;
+            break;
+        }
+    }
+    console.log(taskList)
+    render();
+}
+
+function deleteTask(id){
+    for(let i=0; i<taskList.length; i++){
+        if(taskList[i].id == id){
+            taskList.splice(i,1);
+            break;
+        }
+    }
+    render();
+}
+
+
+
+
+
+
 
 //메뉴 탭 밑줄 슬라이딩 애니메이션
 let underline = document.getElementById("underline");

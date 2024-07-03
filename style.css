@@ -40,3 +40,25 @@ body{
     justify-content: space-between;
     padding: 1em;
 }
+
+.task-done{
+    text-decoration: line-through;
+    background-color: lightgray;
+    width: 900px;
+}
+
+.task-btn{
+    background-color: none;
+    border: none;
+    font-size: 23px;
+    background: none;
+}
+
+.check{
+    color: rgb(24, 172, 231);
+}
+
+.delete{
+    color: red;
+}
+
