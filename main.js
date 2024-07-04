@@ -8,9 +8,20 @@
 
 let taskInput = document.getElementById("task-input");
 let addBtn = document.getElementById("add-btn");
+let tabs = document.querySelectorAll(".tabs-area div");
 let taskList = [];
+let mode='all';
+let filterList = [];
 
 addBtn.addEventListener('click', addTask);
+
+
+for(let i =1; i<tabs.length;i++){
+    tabs[i].addEventListener("click", function(event){
+        filter(event)});
+}
+
+
 
 function addTask(){
     //let taskContent = taskInput.value;
@@ -22,32 +33,41 @@ function addTask(){
     taskList.push(task);
     console.log(taskList);
     render();
+    taskInput.value = '';
 }
 
 //사용자가 입력한 할일 목록 화면에 그려주기
 function render(){
+    //1.내가 선택한 탭에 따라서 
+    let list=[];
+    if(mode === "all"){
+        list = taskList;
+    }else if(mode === "ongoing" || mode === "done"){
+        list=filterList;
+    }
+    //2.리스트를 다르게 보여줌
     let resultHTML = '';
-    for(let i=0; i<taskList.length; i++){
-        if(taskList[i].isComplete == true){
+    for(let i=0; i<list.length; i++){
+        if(list[i].isComplete == true){
             resultHTML += `<div class="task">
-                    <div class="task-done">${taskList[i].taskContent}</div>
+                    <div class="task-done">${list[i].taskContent}</div>
                     <div class="btn-area">
-                        <button onclick="toggleComplete('${taskList[i].id}')" class="task-btn check">
+                        <button onclick="toggleComplete('${list[i].id}')" class="task-btn check">
                             <i class="fa-solid fa-rotate-left"></i>
                         </button>
-                        <button onclick="deleteTask('${taskList[i].id}')" class="task-btn delete">
+                        <button onclick="deleteTask('${list[i].id}')" class="task-btn delete">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>                    
                 </div>`
         }else{
             resultHTML += `<div class="task">
-                    <div>${taskList[i].taskContent}</div>
+                    <div>${list[i].taskContent}</div>
                     <div class="btn-area">
-                        <button onclick="toggleComplete('${taskList[i].id}')" class="task-btn check">
+                        <button onclick="toggleComplete('${list[i].id}')" class="task-btn check">
                             <i class="fa-solid fa-check"></i>
                         </button>
-                        <button onclick="deleteTask('${taskList[i].id}')" class="task-btn delete">
+                        <button onclick="deleteTask('${list[i].id}')" class="task-btn delete">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>                    
@@ -81,14 +101,36 @@ function deleteTask(id){
             break;
         }
     }
-    render();
+    filter({ target: { id: mode } });
+    //render();
 }
 
 
-
-
-
-
+function filter(event){
+    mode = event.target.id;
+    console.log(mode);
+    filterList = [];
+    if(mode === "all"){
+        //전체 리스트 보여주기
+        render();
+    }else if(mode === "ongoing"){
+        //진행중 아이템 보여주기
+        for(let i=0; i<taskList.length; i++){
+            if(taskList[i].isComplete === false){
+                filterList.push(taskList[i]);
+            }
+        }
+        render();
+    }else if(mode === "done"){
+        //끝난 아이템 보여주기
+        for(let i=0; i<taskList.length; i++){
+            if(taskList[i].isComplete === true){
+                filterList.push(taskList[i]);
+            }
+        }
+        render();
+    }
+}
 
 //메뉴 탭 밑줄 슬라이딩 애니메이션
 let underline = document.getElementById("underline");
@@ -103,3 +145,17 @@ function underlineIndicator(e){
     e.currentTarget.offsetTop + e.currentTarget.offsetHeight + "px";
 
 }
+
+//엔터키 누를때도 입력하는 함수
+let input = document.getElementById("task-input");
+
+// Execute a function when the user presses a key on the keyboard
+input.addEventListener("keypress", function(event) {
+  // If the user presses the "Enter" key on the keyboard
+  if (event.key === "Enter") {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("add-btn").click();
+  }
+});

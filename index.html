@@ -9,23 +9,22 @@
 </head>
 <body>
     <div class="container">
-        <h1>To-do List</h1>
+        <h1 style="padding-top:30px;">To-do List</h1>
         <section class="input-area">
-            <input type="text" id="task-input">
-            <button id="add-btn">+</button>
+            <input type="text" id="task-input" onfocus="this.value=''">
+            <button id="add-btn" class="task-btn check">+</button>
         </section>
 
-        <section class="task-area">
-            
+        <section class="task-area" style="margin-top: 20px;">            
             <div class="tabs-area">
                 <div id="underline"><!--메뉴탭 밑에 생길 슬라이딩 선--></div>
-                <div class="tabs">
+                <div class="tabs" id="all">
                     All
                 </div>
-                <div class="tabs">
+                <div class="tabs" id="ongoing">
                     not Done
                 </div>
-                <div class="tabs">
+                <div class="tabs" id="done">
                     Done
                 </div>
             </div>            

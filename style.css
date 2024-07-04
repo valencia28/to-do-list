@@ -62,3 +62,17 @@ body{
     color: red;
 }
 
+.tabs-area div{
+    cursor: pointer;
+}
+
+#task-input{
+    border: 1px solid gray;
+}
+
+#add-btn{
+    font-size:18px;
+    font-weight: bold;
+    color:white;
+    background-color: pink;
+}
