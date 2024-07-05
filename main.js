@@ -91,7 +91,8 @@ function toggleComplete(id){
         }
     }
     console.log(taskList)
-    render();
+    //render();
+    filter({ target: { id: mode } }); // Apply current filter mode
 }
 
 function deleteTask(id){
